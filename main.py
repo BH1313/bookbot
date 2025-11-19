@@ -1,28 +1,42 @@
 from stats import count_words
 from stats import count_character
 from stats import sort_character
+import sys
+
 
 def get_book_text(filepath):
   with open(filepath) as f:
     return f.read()
 
+
+
 def main():
-  text = get_book_text("./books/frankenstein.txt")
+    if len(sys.argv) != 2:
+      print("Usage: python3 main.py <path_to_book>")
+      sys.exit(1)
 
-  num_words = count_words(text)
-  #print(f"Found {num_words} total words")
+    book_path = sys.argv[1]
 
-  characters = count_character(text)
-  sorted_characters = sort_character(characters)
+    print("=========== BOOKBOT ============")
+    print(f"Analyzing book found at {book_path}...")
 
-######CLI#UI############
-  print("============ BOOKBOT ============")
-  print("Analyzing book found at books/frankenstein.txt...")
-  print("----------- Word Count ----------")
-  print(f"(Found {num_words} total words")
-  print("--------- Character Count -------")
-  print(sorted_characters)
-  print("============= END ===============")
+    text = get_book_text(book_path)
+
+    print("---------- Word Count ----------")
+    num_words = count_words(text)
+    print(f"Found {num_words} total words")
+
+    print("------- Character Count -------")
+    characters = count_character(text)
+    sorted_chars = sort_character(characters)
+
+    for item in sorted_chars:
+        if item["char"].isalpha():
+            print(f"{item['char']}: {item['num']}")
+
+    print("============= END ==============")
+
+
 
 if __name__ == "__main__":
   main()
